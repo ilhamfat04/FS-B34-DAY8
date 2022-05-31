@@ -6,7 +6,7 @@ const cors = require('cors')
 
 // import this
 const http = require('http')
-const {Server} = require('socket.io')
+const { Server } = require('socket.io')
 
 // Get routes to the variabel
 const router = require('./src/routes')
@@ -21,6 +21,7 @@ const io = new Server(server, {
 })
 
 // import here
+require('./src/socket')(io)
 
 const port = 5000
 
