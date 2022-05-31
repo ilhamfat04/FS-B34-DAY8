@@ -1,9 +1,16 @@
 // import models
-const {chat, user, profile} = require("../../models")
+const { chat, user, profile } = require("../../models")
 
 const socketIo = (io) => {
 
   // code here
+  io.use((socket, next) => {
+    if (socket.handshake.auth && socket.handshake.auth.token) {
+      next()
+    } else {
+      next(new Error("Not Authorized"))
+    }
+  })
 
   io.on('connection', (socket) => {
     console.log('client connect: ', socket.id)
@@ -72,7 +79,7 @@ const socketIo = (io) => {
           ...item,
           image: item.profile?.image ? process.env.PATH_FILE + item.profile?.image : null
         }))
-        
+
         socket.emit("customer contacts", customerContacts)
       } catch (err) {
         console.log(err)
